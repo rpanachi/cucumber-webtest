@@ -1,18 +1,19 @@
 # Commonly used webrat steps
 # http://github.com/brynary/webrat
  
-Given /^I am on (.+)$/ do |page_name|
-  visit path_to(page_name)
+Dado /^que estou no site "([^\"]*)"$/ do |site|
+  visit site
 end
  
-When /^I go to (.+)$/ do |page_name|
-  visit path_to(page_name)
+E /^vou para a pagina "([^\"]*)"$/ do |pagina|
+  visit pagina
 end
-When /^I press "([^\"]*)"$/ do |button|
-  click_button(button)
+
+E /^aperto o botao "([^\"]*)"$/ do |botao|
+  click_button(botao)
 end
- 
-When /^I follow "([^\"]*)"$/ do |link|
+
+E /^clico no link "([^\"]*)"$/ do |link|
   click_link(link)
 end
  
@@ -20,22 +21,18 @@ When /^I follow "([^\"]*)" within "([^\"]*)"$/ do |link, parent|
   click_link_within(parent, link)
 end
  
-When /^I fill in "([^\"]*)" with "([^\"]*)"$/ do |field, value|
-  fill_in(field, :with => value)
+E /^preencho o campo "([^\"]*)" com "([^\"]*)"$/ do |campo, valor|
+  fill_in(campo, :with => valor)
 end
  
-When /^I fill in "([^\"]*)" for "([^\"]*)"$/ do |value, field|
-  fill_in(field, :with => value)
-end
- 
-When /^I fill in the following:$/ do |fields|
-  fields.rows_hash.each do |name, value|
-    When %{I fill in "#{name}" with "#{value}"}
+E /^preencho os campos:$/ do |campos|
+  campos.rows_hash.each do |campo, valor|
+    E %{eu preencho o campo "#{campo}" com "#{valor}"}
   end
 end
  
-When /^I select "([^\"]*)" from "([^\"]*)"$/ do |value, field|
-  select(value, :from => field)
+E /^seleciono "([^\"]*)" de "([^\"]*)"$/ do |valor, campo|
+  select(valor, :from => campo)
 end
  
 When /^I select "([^\"]*)" as the date and time$/ do |time|
@@ -62,12 +59,12 @@ When /^I select "([^\"]*)" as the "([^\"]*)" date$/ do |date, date_label|
   select_date(date, :from => date_label)
 end
  
-When /^I check "([^\"]*)"$/ do |field|
-  check(field)
+E /^checo o campo "([^\"]*)"$/ do |campo|
+  check(campo)
 end
  
-When /^I uncheck "([^\"]*)"$/ do |field|
-  uncheck(field)
+E /^nao checo o campo "([^\"]*)"$/ do |campo|
+  uncheck(campo)
 end
  
 When /^I choose "([^\"]*)"$/ do |field|
@@ -77,12 +74,12 @@ end
 When /^I attach the file at "([^\"]*)" to "([^\"]*)"$/ do |path, field|
   attach_file(field, path)
 end
- 
-Then /^I should see "([^\"]*)"$/ do |text|
-  response.should contain(text)
+
+Entao /^deveria ver "([^\"]*)"$/ do |texto|
+  response.should contain(texto)
 end
  
-Then /^I should see \/([^\/]*)\/$/ do |regexp|
+Entao /^deveria ver \/([^\/]*)\/$/ do |regexp|
   regexp = Regexp.new(regexp)
   response.should contain(regexp)
 end
@@ -96,12 +93,12 @@ Then /^I should not see \/([^\/]*)\/$/ do |regexp|
   response.should_not contain(regexp)
 end
  
-Then /^the "([^\"]*)" field should contain "([^\"]*)"$/ do |field, value|
-  field_labeled(field).value.should =~ /#{value}/
+Entao /^o campo "([^\"]*)" deveria conter "([^\"]*)"$/ do |campo, valor|
+  field_labeled(campo).value.should =~ /#{valor}/
 end
  
-Then /^the "([^\"]*)" field should not contain "([^\"]*)"$/ do |field, value|
-  field_labeled(field).value.should_not =~ /#{value}/
+Entao /^o campo "([^\"]*)" nao deveria conter "([^\"]*)"$/ do |campo, valor|
+  field_labeled(campo).value.should_not =~ /#{valor}/
 end
  
 Then /^the "([^\"]*)" checkbox should be checked$/ do |label|
@@ -112,7 +109,7 @@ Then /^the "([^\"]*)" checkbox should not be checked$/ do |label|
   field_labeled(label).should_not be_checked
 end
  
-Then /^I should be on (.+)$/ do |page_name|
+Entao /^eu deveria estar na pagina (.+)$/ do |page_name|
   URI.parse(current_url).path.should == path_to(page_name)
 end
  
