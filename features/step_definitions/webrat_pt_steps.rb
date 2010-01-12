@@ -1,11 +1,13 @@
 # Commonly used webrat steps
 # http://github.com/brynary/webrat
- 
-Dado /^que estou no site "([^\"]*)"$/ do |site|
+
+=begin 
+
+Dado /^que estou em "([^\"]*)"$/ do |site|
   visit site
 end
  
-E /^vou para a pagina "([^\"]*)"$/ do |pagina|
+E /^vou para "([^\"]*)"$/ do |pagina|
   visit pagina
 end
 
@@ -116,3 +118,5 @@ end
 Then /^show me the page$/ do
   save_and_open_page
 end
+
+=end

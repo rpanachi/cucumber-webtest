@@ -1,3 +1,4 @@
+=begin
 require 'webrat'
 
 include Webrat::Methods
@@ -11,3 +12,4 @@ end
 World do
   Webrat::Session.new(Webrat::MechanizeAdapter.new)
 end
+=end

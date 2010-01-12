@@ -1,3 +1,13 @@
 Exemplo de utilização do Cucumber com Webrat e Mechanize para testar qualquer aplicação web
 
 Para mais detalhes acesse http://caueguerra.com/utilizando-cucumber-para-testar-qualquer-aplicacao-web/
+
+Configurando o ambiente jRuby e gems necessárias para rodar o Celerity:
+
+sudo apt-get install jruby1.1
+sudo jruby -S gem update --system
+
+jruby -S gem install rake cucumber rspec celerity
+jruby -S cucumber --help
+jruby -S cucumber features
+jruby -S cucumber features/celerity.feature 

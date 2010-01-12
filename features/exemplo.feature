@@ -5,7 +5,7 @@ Funcionalidade: Serviços do Google
   Eu quero utilizar os serviços do Google
 
   Contexto:
-    Dado que estou no site "http://google.com.br"     
+    Dado que estou em "http://google.com.br"     
 
   Cenario: pesquisando
     E preencho o campo "q" com "1up4developers"
@@ -18,4 +18,4 @@ Funcionalidade: Serviços do Google
     E seleciono "português" de "tl"
     E seleciono "inglês" de "sl"
     E aperto o botao "Traduzir"
-    #Entao deveria ver "The best way of doing things is the right way"
+    Entao deveria ver "The best way of doing things is the right way"
