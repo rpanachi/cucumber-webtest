@@ -2,15 +2,16 @@ require "celerity"
 require "spec"
 
 Before do
-  @browser = Celerity::Browser.new
+  @browser = Celerity::Browser.new(:resynchronize => true)
+  @browser.javascript_enabled = true
   @host = "http://localhost:3000"
 end
 
-Dado /estou em "([^\"]*)"/ do |site|
+Dado /estou em "([^\"]*)"$/ do |site|
   @browser.goto(site)
 end
 
-E /vou para "([^\"]*)"/ do |page|
+E /vou para "([^\"]*)"$/ do |page|
   @browser.goto(page)
 end
 
@@ -18,11 +19,33 @@ E /preencho o campo "([^\"]*)" com "([^\"]*)"/ do |field, value|
   @browser.text_field(:name, field).value = value
 end
 
-E /aperto o botao "([^\"]*)"/ do |button|
+E /^clico no link "([^\"]*)"$/ do |link|
+  click_link(link)
+end
+
+E /^clico no link "([^\"]*)" e aguardo$/ do |link|
+  @browser.wait_until do |browser|
+    click_link(link, browser)
+    browser.wait
+  end
+end
+
+E /aperto o botao "([^\"]*)"$/ do |button|
   @browser.button(:value, button).click
 end
 
-Entao /deveria ver "([^\"]*)"/ do |text|
+E /aperto o botao "([^\"]*)" e aguardo$/ do |button|
+  @browser.wait_until do |browser|
+    @browser.button(:value, button).click
+    @browser.wait
+  end
+end
+
+Entao /deveria ver "([^\"]*)"$/ do |text|
+  @browser.text.should include(text)
+end
+
+Entao /deveria ver "([^\"]*)" no elemento "([^\"]*)"$/ do |text, element|
   @browser.text.should include(text)
 end
 
@@ -121,3 +144,15 @@ def assert_successful_response
 end
 
 =end
+
+def click_link(link, browser = @browser)
+  _link = [[:text, /^#{Regexp.escape(link)}$/], [:id, link], [:title, link]].map{|args| @browser.link(*args)}.find{|__link| __link.exist?}
+  raise "link \"#{link}\" not found" unless _link
+  _link.click
+end
+
+def find_by_label_or_id(element, attribute)
+  matchers = [[attribute, :id], [attribute, :name]]
+  matchers << [@browser.label(:text, attribute).for, :id] if @browser.label(:text, attribute).exist?
+  field = matchers.map{|_field, matcher| @browser.send(element, matcher, _field)}.find(&:exist?) || raise("#{element} not found using  \"#{attribute}\"")
+end
