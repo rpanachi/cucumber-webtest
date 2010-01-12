@@ -11,3 +11,8 @@ jruby -S gem install rake cucumber rspec celerity
 jruby -S cucumber --help
 jruby -S cucumber features
 jruby -S cucumber features/celerity.feature 
+
+Links de apoio:
+
+http://wiki.github.com/aslakhellesoy/cucumber/jruby-and-java
+http://celerity.rubyforge.org/
